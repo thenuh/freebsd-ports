@@ -1,0 +1,48 @@
+#!/bin/sh
+
+# PROVIDE: drone_runner_ssh
+# REQUIRE: NETWORKING SYSLOG
+# KEYWORD: shutdown
+#
+# Add the following lines to /etc/rc.conf to enable drone_runner_ssh:
+#
+#drone_runner_ssh_enable="YES"
+
+. /etc/rc.subr
+
+name="drone_runner_ssh"
+
+rcvar="drone_runner_ssh_enable"
+
+load_rc_config $name
+
+: ${drone_runner_ssh_user:="nobody"}
+: ${drone_runner_ssh_enable:="NO"}
+: ${drone_runner_ssh_facility:="daemon"}
+: ${drone_runner_ssh_priority:="debug"}
+: ${drone_runner_ssh_rpc_proto:="http"}
+: ${drone_runner_ssh_rpc_host:="localhost"}
+: ${drone_runner_ssh_rpc_secret:="super-duper-secret"}
+
+command="%%PREFIX%%/bin/drone-runner-ssh"
+procname="%%PREFIX%%/bin/drone-runner-ssh"
+
+pidfile="/var/run/${name}.pid"
+
+start_cmd="${name}_start"
+
+drone_runner_ssh_start() {
+	if [ "${drone_runner_ssh_user}" = "nobody" ]; then
+		echo "rc_var \"drone_runner_ssh_user\" need to be set to a valid user"
+		exit 1
+	fi
+	/usr/sbin/daemon %%DAEMONARGS%% \
+		-u ${drone_runner_ssh_user} -p ${pidfile} \
+		/usr/bin/env -i \
+		"DRONE_RPC_PROTO=${drone_runner_ssh_rpc_proto}" \
+		"DRONE_RPC_HOST=${drone_runner_ssh_rpc_host}" \
+		"DRONE_RPC_SECRET=${drone_runner_ssh_rpc_secret}" \
+		$command
+}
+
+run_rc_command "$1"

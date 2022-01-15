@@ -1,0 +1,2 @@
+bin/drone-runner-exec
+etc/rc.d/drone-runner-exec

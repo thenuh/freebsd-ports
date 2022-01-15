@@ -1,0 +1,46 @@
+#!/bin/sh
+
+# PROVIDE: drone_server
+# REQUIRE: NETWORKING SYSLOG
+# KEYWORD: shutdown
+#
+# Add the following lines to /etc/rc.conf to enable drone-server:
+#
+#drone_server_enable="YES"
+
+. /etc/rc.subr
+
+name="drone_server"
+
+rcvar="drone_server_enable"
+
+load_rc_config $name
+
+: ${drone_server_user:="www"}
+: ${drone_server_enable:="NO"}
+: ${drone_server_facility:="daemon"}
+: ${drone_server_priority:="debug"}
+: ${drone_server_envfile:="%%PREFIX%%/etc/drone-server/drone-server.env"}
+: ${drone_server_dbdir:="%%DRONE_DBDIR%%"}
+
+command="%%PREFIX%%/bin/drone-server"
+command_args="-env-file ${drone_server_envfile}"
+procname="%%PREFIX%%/bin/drone-server"
+
+pidfile="/var/run/${name}.pid"
+
+start_cmd="${name}_start"
+
+drone_server_start() {
+	if ! [ -f ${drone_server_envfile} ]; then
+		echo "cannot start without env-file!"
+		exit 1
+	else
+		cd ${drone_server_dbdir}
+		/usr/sbin/daemon %%DAEMONARGS%% \
+			-u ${drone_server_user} -p ${pidfile} \
+			$command $command_args
+	fi
+}
+
+run_rc_command "$1"

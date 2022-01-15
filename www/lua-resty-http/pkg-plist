@@ -1,0 +1,3 @@
+%%LUA_MODSHAREDIR%%/resty/http.lua
+%%LUA_MODSHAREDIR%%/resty/http_connect.lua
+%%LUA_MODSHAREDIR%%/resty/http_headers.lua

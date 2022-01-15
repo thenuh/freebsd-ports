@@ -1,0 +1,5 @@
+bin/drone-server
+@dir(%%DRONE_USER%%,%%DRONE_GROUP%%,750) %%ETCDIR%%
+@(%%DRONE_USER%%,%%DRONE_GROUP%%,640) %%ETCDIR%%/drone-server.env.sample
+etc/rc.d/drone-server
+@dir(%%DRONE_USER%%,%%DRONE_GROUP%%,750) /var/db/drone_server

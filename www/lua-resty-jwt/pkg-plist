@@ -1,0 +1,4 @@
+%%LUA_MODSHAREDIR%%/resty/evp.lua
+%%LUA_MODSHAREDIR%%/resty/jwt-validators.lua
+%%LUA_MODSHAREDIR%%/resty/jwt.lua
+
