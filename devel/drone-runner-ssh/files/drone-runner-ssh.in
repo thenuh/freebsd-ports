@@ -39,9 +39,9 @@ drone_runner_ssh_start() {
 	/usr/sbin/daemon %%DAEMONARGS%% \
 		-u ${drone_runner_ssh_user} -p ${pidfile} \
 		/usr/bin/env -i \
-		"DRONE_RPC_PROTO=${drone_runner_ssh_rpc_proto}" \
-		"DRONE_RPC_HOST=${drone_runner_ssh_rpc_host}" \
-		"DRONE_RPC_SECRET=${drone_runner_ssh_rpc_secret}" \
+		"CLIENT_DRONE_RPC_PROTO=${drone_runner_ssh_rpc_proto}" \
+		"CLIENT_DRONE_RPC_HOST=${drone_runner_ssh_rpc_host}" \
+		"CLIENT_DRONE_RPC_SECRET=${drone_runner_ssh_rpc_secret}" \
 		$command
 }
 
